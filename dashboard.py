@@ -61,8 +61,8 @@ app.layout = html.Div(id='primary',children=[
         html.Div(children=[
             html.Div(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()),style={'textAlign':'center','height':'12%','width':'12%'}),style={'justify-content':'center'}), #The logo comes on here.
             html.Div(id='buffer1',style={'height':'20px'}),
-            html.H1('Abhishek Sanjay Jain',style={'fontSize':'250%',margin={'t': 0,'b':0}}),
-            html.H3('Master of Environmental Management Candidate 2021',style={'fontSize':'150%',margin={'t': 0,'b':0}}),
+            html.H1('Abhishek Sanjay Jain',style={'fontSize':'250%'}),
+            html.H3('Master of Environmental Management Candidate 2021',style={'fontSize':'150%'}),
             html.Div(children=[
                 html.A(children='LinkedIn Profile  |', id='link',
                         href='https://www.linkedin.com/in/abhisheksjain/', target='_blank'),
