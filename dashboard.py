@@ -13,10 +13,10 @@ import base64
 import json
 
 colors = {   
-    'background': '#f2f2f2',  #Background color for the application, this is used everywhere
-    'text': '#003878',
-    'solar':'#f2f2f2',
-    'wind':'#f2f2f2'       #Text color for the application, this is used everywhere
+    'background': '#ffffff',  #Background color for the application, this is used everywhere
+    'text': '#002f66',
+    'solar':'#fff3e0',
+    'wind':'#e0ebff'       #Text color for the application, this is used everywhere
 }
 config = {"toImageButtonOptions": {"width": None, "height": None}}   #This ensures that when the plot is downloaded from the dashboard, it retains the original dimensions. 
 image_filename='logo.png' #Image fill needs to be in the root directory
@@ -35,8 +35,8 @@ def getsolarmap(value1):
 
 def getsolarplot(value1):
     solardf2=solardf[(solardf['Capacity Factor']>value1[0]) & (solardf['Capacity Factor']<value1[1])]
-    fig1 = px.histogram(solardf2, y="Nameplate Capacity", x="Capacity Factor", marginal="box")
-    fig1.update_layout(title="Histogram and Boxplot for the solar projects shown above")
+    fig1 = px.histogram(solardf2, y="Nameplate Capacity", x="Capacity Factor", marginal="box",color_discrete_sequence=['#86919c'],labels={'Nameplate Capacity':'Nameplate Capacity (MW)'})
+    fig1.update_layout(title="Histogram and Boxplot for the solar projects shown above",paper_bgcolor='#fff3e0')
     return fig1
 
 def getwindmap(value1):
@@ -48,8 +48,8 @@ def getwindmap(value1):
 
 def getwindplot(value1):
     winddf2=winddf[(winddf['Capacity Factor']>value1[0]) & (winddf['Capacity Factor']<value1[1])]
-    fig2 = px.histogram(winddf2, y="Nameplate Capacity", x="Capacity Factor", marginal="box")
-    fig2.update_layout(title="Histogram and Boxplot for the wind projects shown above")
+    fig2 = px.histogram(winddf2, y="Nameplate Capacity", x="Capacity Factor", marginal="box",color_discrete_sequence=['#86919c'],labels={'Nameplate Capacity':'Nameplate Capacity (MW)'})
+    fig2.update_layout(title="Histogram and Boxplot for the wind projects shown above",paper_bgcolor='#e0ebff')
     return fig2
 
 
@@ -59,27 +59,34 @@ server = app.server
 app.layout = html.Div(id='primary',children=[
     html.Div(id='header',children=[
         html.Div(children=[
-            html.H1('Abhishek Sanjay Jain'),
-            html.H3('Master of Environmental Management Candidate 2021'),
+            html.Div(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()),style={'textAlign':'center','height':'12%','width':'12%'}),style={'justify-content':'center'}), #The logo comes on here.
+            html.Div(id='buffer1',style={'height':'20px'}),
+            html.H1('Abhishek Sanjay Jain',style={'fontSize':'250%'}),
+            html.H3('Master of Environmental Management Candidate 2021',style={'fontSize':'150%'}),
             html.Div(children=[
-                html.A(children='LinkedIn Profile', id='link',
+                html.A(children='LinkedIn Profile  |', id='link',
                         href='https://www.linkedin.com/in/abhisheksjain/', target='_blank'),
+                html.A(children='  GitHub Repository', id='link2',
+                        href='https://github.com/jain37557/abhisheksdashboard', target='_blank'),
+                html.Div(id='buffer2',style={'height':'20px'}),                 
                 html.P('''This dashboard is made using only open source tools! The data is sourced from EPA's Emissions & Generation Resource
                         Integrated Database (eGRID) 2018. It represents the performance characterisitics of almost all 
                         solar and wind electric power generated in the United States. Through this dasboard, we can manifest a powerful way
-                        of visualizing and analyzing interactive data.''')
-            ])],style={'width':'80%','display':'inline-block'}),
-        html.Div(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()),style={'textAlign':'center','height':'40%','width':'100%'}),style={'justify-content':'center','width':'20%','display':'inline-block'}) #The logo comes on here.
-        ],style={"border":"1px black",'width':'100%','display':'center'}),
+                        of visualizing and analyzing interactive data.
+                        The visualizations below represent the relationship between the capacity factor and nameplate capacity (MW) of all
+                        solar and wind electric power stations. The histogram tells a deeper story
+                        around the distribution of capacity with increasing capacity factor. Hover over the data points to examine the metadata.''',style={'border':'1px black solid','fontSize':'110%'})
+            ])],style={'display':'center','width':'100%','display':'inline-block'})
+        ],style={"border":"1px black",'width':'100%','display':'center','textAlign':'center'}),
         html.Div(id='all',children=[ 
                 html.Div(id='allsolar',children=[
-                        html.H4('This is the Solar Map'),
+                        html.H4('[Solar] Nameplate Capacity (MW, Size) and Capacity Factor (Adjust slider below, Color)'),
                         dcc.RangeSlider(
                             id='solar-slider',
                             min=0,
                             max=1,
                             step=0.05,
-                            value=[0.2,0.4],
+                            value=[0,1],
                             marks={
                                 0:{'label':'0'},
                                 0.2:{'label':'0.2'},
@@ -94,13 +101,13 @@ app.layout = html.Div(id='primary',children=[
                 ],style={'textAlign':'center',"border":"1px orange solid",'backgroundColor':colors['solar'],'width':'49.5%','display':'inline-block'}),
                 html.Div(id='spacer',style={'width':'1%','display':'inline-block'}),
                 html.Div(id='allwind',children=[
-                        html.H4('This is the Wind Map'),
+                        html.H4('[Wind] Nameplate Capacity (MW, Size) and Capacity Factor (Adjust slider below, Color)'),
                         dcc.RangeSlider(
                             id='wind-slider',
                             min=0,
                             max=1,
                             step=0.05,
-                            value=[0.2,0.4],
+                            value=[0,1],
                             marks={
                                 0:{'label':'0'},
                                 0.2:{'label':'0.2'},
@@ -112,8 +119,8 @@ app.layout = html.Div(id='primary',children=[
                         ),
                         dcc.Graph(id='windmap',config=config),
                         dcc.Graph(id='windplot',config=config)
-                ],style={'textAlign':'center',"border":"1px skyblue solid",'width':'49%','display':'inline-block'})
-        ],style={'backgroundColor':colors['wind'],'width':'100%','display':'center'}),
+                ],style={'backgroundColor':colors['wind'],'textAlign':'center',"border":"1px skyblue solid",'width':'49%','display':'inline-block'})
+        ],style={'width':'100%','display':'center'}),
 ],style={'color':colors['text'],'backgroundColor':colors['background']})
 
 
