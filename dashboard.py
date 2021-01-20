@@ -61,8 +61,8 @@ app.layout = html.Div(id='primary',children=[
         html.Div(children=[
             html.Div(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()),style={'textAlign':'center','height':'12%','width':'12%'}),style={'justify-content':'center'}), #The logo comes on here.
             html.Div(id='buffer1',style={'height':'20px'}),
-            html.H1('Abhishek Sanjay Jain',style={'fontSize':'250%'}),
-            html.H3('Master of Environmental Management Candidate 2021',style={'fontSize':'150%'}),
+            html.H1('Abhishek Sanjay Jain',style={'fontSize':'250%',margin={'t': 0,'b':0}}),
+            html.H3('Master of Environmental Management Candidate 2021',style={'fontSize':'150%',margin={'t': 0,'b':0}}),
             html.Div(children=[
                 html.A(children='LinkedIn Profile  |', id='link',
                         href='https://www.linkedin.com/in/abhisheksjain/', target='_blank'),
@@ -75,7 +75,7 @@ app.layout = html.Div(id='primary',children=[
                         of visualizing and analyzing interactive data.
                         The visualizations below represent the relationship between the capacity factor and nameplate capacity (MW) of all
                         solar and wind electric power stations. The histogram tells a deeper story
-                        around the distribution of capacity with increasing capacity factor. Hover over the data points to examine the metadata.''',style={'border':'1px black solid','fontSize':'110%'})
+                        around the distribution of capacity with increasing capacity factor. Hover over the data points to examine the metadata.''',style={'fontSize':'110%'})
             ])],style={'display':'center','width':'100%','display':'inline-block'})
         ],style={"border":"1px black",'width':'100%','display':'center','textAlign':'center'}),
         html.Div(id='all',children=[ 
